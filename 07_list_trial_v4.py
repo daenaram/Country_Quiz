@@ -58,6 +58,7 @@ class Game:
             ["#FAD9D5", "Start Over", "start over"]
         ]
 
+        # list to hold each control button separately
         self.control_btn_ref = []
 
         for item in range(0, 4):
@@ -70,8 +71,6 @@ class Game:
 
             # add buttons to control list
             self.control_btn_ref.append(self.make_control_btn)
-
-            self.to_help_btn = self.control_btn_ref[0]
 
     # the button action lists
     def to_do(self, action):

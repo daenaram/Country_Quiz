@@ -1,7 +1,6 @@
+# 'help' and 'start over' buttons are working
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
-import csv
-import random
 
 
 class Start:
