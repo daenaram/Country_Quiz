@@ -4,6 +4,8 @@ import random
 import csv
 
 
+# players enter the number of
+# questions they want
 class Start:
 
     def __init__(self):
@@ -39,10 +41,13 @@ class Start:
         self.input_frame = Frame(self.quiz_frame)
         self.input_frame.grid(row=2)
 
+        # text box for the number of questions
         self.quiz_entry = Entry(self.input_frame,
                                 font=("Arial", "14"))
         self.quiz_entry.grid(row=0, column=0, padx=5, pady=5)
 
+        # button that will open the Game gui if the
+        # number of questions is acceptable
         self.enter_button = Button(self.input_frame, text="Enter",
                                    bg="#a2eba2", fg="#000000",
                                    font=("Arial", "14", "bold"),
@@ -50,13 +55,15 @@ class Start:
                                    command=self.to_enter)
         self.enter_button.grid(row=0, column=1, padx=5, pady=5)
 
+        # the error message if the number the user
+        # entered isn't accepted
         self.error_label = Label(self.quiz_frame, text="",
                                  font=("Arial", "10"),
                                  fg="#9C0000")
         self.error_label.grid(row=3)
 
     # error message and the text box turns red
-    # only accepts whole numbers
+    # only accepts whole numbers from 1 to 20
     def check_rounds(self, min_value, max_value):
 
         has_error = "no"
@@ -132,6 +139,8 @@ class Game:
         self.questions_wanted = IntVar()
         self.questions_wanted.set(how_many)
 
+        # the numbers of questions that was answered
+        # for updating teh heading
         self.questions_played = IntVar()
         self.questions_played.set(0)
 
@@ -145,6 +154,7 @@ class Game:
         self.game_frame = Frame(self.game_box)
         self.game_frame.grid()
 
+        # the heading and to update it every question
         number_game_question = "Choose - Round 1 of {}".format(how_many)
         self.choose_heading = Label(self.game_frame,
                                     text=number_game_question,
@@ -155,6 +165,7 @@ class Game:
         self.button_options = self.get_csv_file()
         self.button_list_options = self.get_quest_ans()
 
+        # to get the option capitals in the first question
         self.quiz_list = []
 
         self.game_question = Label(self.game_frame,
@@ -167,8 +178,11 @@ class Game:
         self.options_frame = Frame(self.game_frame)
         self.options_frame.grid(row=2)
 
+        # to hold reference for the capital option buttons
+        # to configure every new question
         self.options_button_ref = []
 
+        # capital option buttons
         for item in range(0, 4):
             self.options_button = Button(self.options_frame,
                                          fg="#000000",
@@ -193,6 +207,7 @@ class Game:
             ["#FAD9D5", "Start Over", "start over"]
         ]
 
+        # list to hold references for control buttons
         self.control_btn_ref = []
 
         for item in range(0, 4):
@@ -225,7 +240,7 @@ class Game:
         else:
             self.next_question()
 
-    # getting the csv file
+    # getting the questions and capitals from the csv file
     def get_csv_file(self):
 
         self.capitals_variable.get()
@@ -239,9 +254,11 @@ class Game:
 
         return var_all_questions
 
+    # randomly choose four capitals for button
     def get_quest_ans(self):
         options = []
 
+        # get 4 unique capitals
         while len(options) < 4:
             choose = random.choice(self.button_options)
             index_chosen = self.button_options.index(choose)
@@ -255,6 +272,8 @@ class Game:
 
         return options
 
+    # sets up new round of country question when
+    # 'next' button is pressed
     def next_question(self):
         # Reset the backgrounds of all option buttons to #A3D4FF
         for item in self.options_button_ref:
@@ -277,6 +296,7 @@ class Game:
         self.correct_answer = self.quiz_list[0][1]  # Store the correct answer
         # print("correct answer is", self.correct_answer)
 
+        # adds to the history of correct capitals
         self.right_ans.append(self.correct_answer)
 
         # shuffle list here
@@ -286,6 +306,7 @@ class Game:
         full_question = f"What is the capital of {question}"
         self.game_question.config(text=full_question)
 
+        # adds to the history for the country questions
         self.country_question.append(question)
 
         # Set the text and state for each button
@@ -300,6 +321,8 @@ class Game:
         new_heading = "Question {} of {}".format(current_round + 1, how_many)
         self.choose_heading.config(text=new_heading)
 
+    #  change the colour of the selected capital button
+    #  green if correct ad red if incorrect
     def right_wrong_ans(self, selected_option_text):
         selected_option_index = ""
         # print("you choose", selected_option_text)
@@ -351,7 +374,7 @@ class Game:
         self.game_box.destroy()
 
 
-# help button
+# informs user how to play the game and some buttons
 class Help:
     def __init__(self, partner):
         # dialogue box
@@ -360,6 +383,8 @@ class Help:
         # display help button
         partner.to_help_btn.config(state=DISABLED)
 
+        # If users press cross at top, close help and
+        # 'release' help button
         self.help_box.protocol('WM_DELETE_WINDOW',
                                partial(self.close_help, partner))
 
@@ -392,11 +417,14 @@ class Help:
                                                      partner))
         self.dismiss_button.grid(row=2, padx=10, pady=10)
 
+    # closes help dialogue (used by button and x at top of dialogue)
     def close_help(self, partner):
+        # Put help button back to normal
         partner.to_help_btn.config(state=NORMAL)
         self.help_box.destroy()
 
 
+# show game history
 class History:
     def __init__(self, partner, country_question, user_cap, right_ans):
 
@@ -462,26 +490,32 @@ class History:
         label_font = ("Arial", "14", "bold")
         content_font = ("Arial", "12")
 
+        # Question heading
         self.question_label = Label(self.question_frame, text="Question",
                                     font=label_font)
         self.question_label.grid(row=0, column=0, padx=10, pady=10)
 
+        # question contents / history from the game play
         self.country_question_label = Label(self.question_frame, font=content_font,
                                             text=quiz_question)
         self.country_question_label.grid(row=1, column=0, padx=30, pady=10)
 
+        # User Answer heading
         self.user_answer_label = Label(self.your_answer_frame, text="Your Answer",
                                        font=label_font)
         self.user_answer_label.grid(row=0, column=0, padx=10, pady=10)
 
+        # user answer contents / history from the game play
         self.user_cap_label = Label(self.your_answer_frame, font=content_font,
                                     text=user_history)
         self.user_cap_label.grid(row=1, column=0, padx=30, pady=10)
 
+        # Correct capital heading
         self.correct_cap = Label(self.right_answer_frame, text="Right Answer",
                                  font=label_font)
         self.correct_cap.grid(row=0, column=0, padx=10, pady=10)
 
+        # right capital contents / history from the game play
         self.right_ans_label = Label(self.right_answer_frame, font=content_font,
                                      text=right_answer)
         self.right_ans_label.grid(row=1, column=0, padx=30, pady=10)
@@ -494,6 +528,7 @@ class History:
                                      command=partial(self.close_history, partner))
         self.dismiss_button.grid(row=3, padx=10, pady=10)
 
+    # closes help dialogue (used by button and x at top of dialogue)
     def close_history(self, partner):
         partner.to_history_btn.config(state=NORMAL)
         self.history_box.destroy()
