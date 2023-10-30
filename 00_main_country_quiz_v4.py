@@ -374,8 +374,10 @@ class Help:
 
         help_instruction = "This quiz will test your knowledge of countries and their capitals. " \
                            "You'll be presented with a series of questions about different countries. " \
-                           "Choose the correct capital for each country from the provided options. \n\n" \
-                           "Good luck and enjoy the quiz!"
+                           "Choose the correct capital for each country from the provided options. \n\n " \
+                           "The 'History' button will show you the previous country questions, your answer, " \
+                           "and the correct answer. To access this you have to choose a capital first.\n\n" \
+                           "Good luck and enjoy the quiz :)"
 
         self.help_text_label = Label(self.help_frame, bg="#FFE6CC",
                                      text=help_instruction, wraplength=350,
